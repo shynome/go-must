@@ -2,7 +2,18 @@ package must
 
 import "github.com/lainio/err2/try"
 
-func To[F func() error, R func()](f F) R { return func() { try.To(f()) } }
+func To[F func() error, R func()](f F) R {
+	return func() { try.To(f()) }
+}
+func To1[U any, F func() (U, error), R func() U](f F) R {
+	return func() U { return try.To1(f()) }
+}
+func To2[U, V any, F func() (U, V, error), R func() (U, V)](f F) R {
+	return func() (U, V) { return try.To2(f()) }
+}
+func To3[U, V, W any, F func() (U, V, W, error), R func() (U, V, W)](f F) R {
+	return func() (U, V, W) { return try.To3(f()) }
+}
 
 func Tp[O any, F func(O) error, R func(O)](f F) R {
 	return func(o O) { try.To(f(o)) }
